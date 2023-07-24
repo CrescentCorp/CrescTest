@@ -10,6 +10,6 @@ return {
     should_do_something_complex = function(skip)
         --skip()
         task.wait(2)
-        lib.expect(1 - 1).to.never.equal(1)
+        lib.expect(1 - 1).to.equal(1)
     end
 }

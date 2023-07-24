@@ -40,7 +40,7 @@ function CrescTest.runSuite(TestSuite: TestSuite, context: any): TestSuiteResult
 				afterEach(empty, context, true)
 				continue
 			end
-			
+
 			result[testCaseName] = { ok = isOk, err = response }
 			afterEach(empty, context, false)
 		end
@@ -92,6 +92,13 @@ else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 						then stdio.color("green") .. "Passed" .. stdio.color("reset")
 						else stdio.color("red") .. "Failed" .. stdio.color("reset")}`
 				)
+
+				if testResult.err then
+					table.insert(
+						scopedResult,
+						`\n{testCase}: \n{stdio.color("red")}{testResult.err}{stdio.color("reset")}`
+					)
+				end
 			end
 
 			resultString ..= `\n{file}: \n {table.concat(scopedResult, "\n ")}`
@@ -100,7 +107,6 @@ else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 		print(resultString)
 	end
 end
-
 function CrescTest.expect(input): any
 	return setmetatable({
 		_never = false,
@@ -119,7 +125,10 @@ function CrescTest.expect(input): any
 						result = not result
 					end
 
-					assert(result, `Expected value to{if never then " never" else ""} exist`)
+					assert(
+						result,
+						`Expected value to{if never then " never" else ""} exist: \ntraceback: {debug.traceback()}`
+					)
 				end
 			end
 
@@ -135,7 +144,7 @@ function CrescTest.expect(input): any
 					assert(
 						result,
 						string.format(
-							`Expected value to{if never then " never" else ""} be equal to {expectedValue}, got {input}`
+							`Expected value to{if never then " never" else ""} be equal to {expectedValue}, got {input}: \ntraceback: {debug.traceback()}`
 						)
 					)
 				end
@@ -153,7 +162,7 @@ function CrescTest.expect(input): any
 					assert(
 						result,
 						string.format(
-							`Expected value to{if never then " never" else ""} be near to {expectedValue}, got {input}`
+							`Expected value to{if never then " never" else ""} be near to {expectedValue}, got {input}: \ntraceback: {debug.traceback()}`
 						)
 					)
 				end
@@ -171,7 +180,7 @@ function CrescTest.expect(input): any
 					assert(
 						result,
 						string.format(
-							`Expected value to{if never then " never" else ""} have type of {expectedType}, got {typeof(input)}`
+							`Expected value to{if never then " never" else ""} have type of {expectedType}, got {typeof(input)}: \ntraceback: {debug.traceback()}`
 						)
 					)
 				end
