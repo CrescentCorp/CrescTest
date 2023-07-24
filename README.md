@@ -5,6 +5,8 @@
 	Unit Testing in Luau SuperCharged
 </h3>
 
+____
+
 <p align="center">
-jo
+    CrescTest is a runtime-agnostic Luau unit testing framework, with a focus on simplicity, and cross-runtime testing. 
 </p>
