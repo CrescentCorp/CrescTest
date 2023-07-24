@@ -7,7 +7,6 @@ export type TestSuite = {
 	[string]: (skip: skip, ...any) -> (),
 }
 
-local task = task or require("@lune/task")
 local CrescTest = {}
 
 local lifecycleFunctions = {
@@ -18,26 +17,6 @@ local lifecycleFunctions = {
 }
 
 local function empty() end
-
-local function getDictonaryCount(dictonary, predicate)
-	local count = 0
-
-	for name, value in dictonary do
-		if predicate(name, value) then
-			count += 1
-		end
-	end
-
-	return count
-end
-
-local function testPredicate(name, ...)
-	if not lifecycleFunctions[name] then
-		return true
-	end
-
-	return false
-end
 
 function CrescTest.runSuite(TestSuite: TestSuite, context: any): TestSuiteResult
 	local result: TestSuiteResult = {}
