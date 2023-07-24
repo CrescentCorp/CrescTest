@@ -46,9 +46,6 @@ function CrescTest.runSuite(TestSuite: TestSuite, context: any): TestSuiteResult
 	local beforeAll = TestSuite.beforeAll or empty
 	local beforeEach = TestSuite.beforeEach or empty
 
-	local testCount = getDictonaryCount(TestSuite, testPredicate)
-	local ranTests = 0
-
 	beforeAll(empty, context)
 	for testCaseName, testCase in TestSuite do
 		if not lifecycleFunctions[testCaseName] then
@@ -61,22 +58,15 @@ function CrescTest.runSuite(TestSuite: TestSuite, context: any): TestSuiteResult
 			end, context)
 
 			if isSkipped then
-				ranTests += 1
 				afterEach(empty, context, true)
 				continue
 			end
 			
 			result[testCaseName] = { ok = isOk, err = response }
-			ranTests += 1
 			afterEach(empty, context, false)
 		end
 	end
 	afterAll(empty, context)
-
-	while ranTests ~= testCount do
-		task.wait()
-	end
-
 	return result
 end
 
@@ -106,6 +96,9 @@ else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 		local result = {}
 
 		for path in getDescendents(dir, {}) do
+			if not string.find(path, "spec") then
+				continue
+			end
 			result[path] = CrescTest.runSuite(require(`../{path}`), context)
 		end
 
