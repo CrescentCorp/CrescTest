@@ -55,9 +55,9 @@ function CrescTest.runSuite(TestSuite: TestSuite, context: any): TestSuiteResult
 			beforeEach(empty, context)
 
 			local isSkipped
-			local isOk, response = pcall(coroutine.wrap(testCase), function()
+			local isOk, response = pcall(testCase, function()
 				isSkipped = true
-				coroutine.yield()
+				error("")
 			end, context)
 
 			if isSkipped then
@@ -65,7 +65,7 @@ function CrescTest.runSuite(TestSuite: TestSuite, context: any): TestSuiteResult
 				afterEach(empty, context, true)
 				continue
 			end
-
+			
 			result[testCaseName] = { ok = isOk, err = response }
 			ranTests += 1
 			afterEach(empty, context, false)
@@ -81,6 +81,7 @@ function CrescTest.runSuite(TestSuite: TestSuite, context: any): TestSuiteResult
 end
 
 if script then -- this is roblox, lets setup a bootstrapper for it
+-- TODO: work on it
 else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 	local fs = require("@lune/fs")
 	local stdio = require("@lune/stdio")
@@ -121,7 +122,7 @@ else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 				)
 			end
 
-			resultString ..= `\n {file}: \n {table.concat(scopedResult, "\n")}`
+			resultString ..= `\n{file}: \n {table.concat(scopedResult, "\n ")}`
 		end
 
 		print(resultString)
