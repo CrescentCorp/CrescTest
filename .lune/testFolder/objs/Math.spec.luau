@@ -11,5 +11,10 @@ return {
         --skip()
         task.wait(2)
         lib.expect(1 - 1).to.equal(1)
+    end,
+    should_throw = function()
+        lib.expect(function()
+            error("message")
+        end).to.never.throw()
     end
 }

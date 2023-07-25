@@ -50,7 +50,6 @@ function CrescTest.runSuite(TestSuite: TestSuite, context: any): TestSuiteResult
 end
 
 if script then -- this is roblox, lets setup a bootstrapper for it
-
 	function CrescTest.runRoblox(dirInstance: Folder, context)
 		local result = {}
 
@@ -65,18 +64,10 @@ if script then -- this is roblox, lets setup a bootstrapper for it
 		for file, testSuiteResult in result do
 			local scopedResult = {}
 			for testCase, testResult in testSuiteResult do
-				table.insert(
-					scopedResult,
-					`   {testCase} .. {if testResult.ok
-						then "Passed"
-						else "Failed"}`
-				)
+				table.insert(scopedResult, `   {testCase} .. {if testResult.ok then "Passed" else "Failed"}`)
 
 				if testResult.err then
-					table.insert(
-						scopedResult,
-						`\n{testCase}: \n{testResult.err}`
-					)
+					table.insert(scopedResult, `\n{testCase}: \n{testResult.err}`)
 				end
 			end
 
@@ -177,9 +168,7 @@ function CrescTest.expect(input): any
 
 					assert(
 						result,
-						string.format(
-							`Expected value to{if never then " never" else ""} be equal to {expectedValue}, got {input}: \ntraceback: {debug.traceback()}`
-						)
+						`Expected value to{if never then " never" else ""} be equal to {expectedValue}, got {input}: \ntraceback: {debug.traceback()}`
 					)
 				end
 			end
@@ -195,9 +184,7 @@ function CrescTest.expect(input): any
 
 					assert(
 						result,
-						string.format(
-							`Expected value to{if never then " never" else ""} be near to {expectedValue}, got {input}: \ntraceback: {debug.traceback()}`
-						)
+						`Expected value to{if never then " never" else ""} be near to {expectedValue}, got {input}: \ntraceback: {debug.traceback()}`
 					)
 				end
 			end
@@ -213,9 +200,25 @@ function CrescTest.expect(input): any
 
 					assert(
 						result,
-						string.format(
-							`Expected value to{if never then " never" else ""} have type of {expectedType}, got {typeof(input)}: \ntraceback: {debug.traceback()}`
-						)
+						`Expected value to{if never then " never" else ""} have type of {expectedType}, got {typeof(input)}: \ntraceback: {debug.traceback()}`
+					)
+				end
+			end
+
+			if queryName == "throw" then
+				return function()
+					local never = self._never
+					local isOk = pcall(input)
+
+					local result = not isOk
+
+					if never then
+						result = not result
+					end
+
+					assert(
+						result,
+						`Expected value to{if never then " never" else ""} throw: \ntraceback: {debug.traceback()}`
 					)
 				end
 			end
