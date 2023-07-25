@@ -50,7 +50,41 @@ function CrescTest.runSuite(TestSuite: TestSuite, context: any): TestSuiteResult
 end
 
 if script then -- this is roblox, lets setup a bootstrapper for it
--- TODO: work on it
+
+	function CrescTest.runRoblox(dirInstance: Folder, context)
+		local result = {}
+
+		for _, instance in dirInstance:GetDescendants() do
+			if instance:IsA("ModuleScript") and instance.Name:find("spec") then
+				result[instance:GetFullName()] = CrescTest.runSuite(require(instance), context)
+			end
+		end
+
+		local resultString = ""
+
+		for file, testSuiteResult in result do
+			local scopedResult = {}
+			for testCase, testResult in testSuiteResult do
+				table.insert(
+					scopedResult,
+					`   {testCase} .. {if testResult.ok
+						then "Passed"
+						else "Failed"}`
+				)
+
+				if testResult.err then
+					table.insert(
+						scopedResult,
+						`\n{testCase}: \n{testResult.err}`
+					)
+				end
+			end
+
+			resultString ..= `\n{file}: \n {table.concat(scopedResult, "\n ")}`
+		end
+
+		print(resultString)
+	end
 else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 	local fs = require("@lune/fs")
 	local stdio = require("@lune/stdio")
@@ -71,7 +105,7 @@ else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 		return result
 	end
 
-	function CrescTest.run(dir: string, context: any)
+	function CrescTest.runLune(dir: string, context: any)
 		local result = {}
 
 		for path in getDescendents(dir, {}) do

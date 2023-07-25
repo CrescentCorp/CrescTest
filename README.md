@@ -35,7 +35,7 @@ export type TestSuite = {
 All custom types used within CrescTest.
 
 ```lua
-function CrescTest.run(dir: string, context: any)
+function CrescTest.runLune(dir: string, context: any)
 ```
 
 A bootstrapper intended for usage using lune.

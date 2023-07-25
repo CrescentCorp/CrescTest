@@ -1,0 +1,12 @@
+{
+	"name": "CrescTest-dev",
+	"tree": {
+		"$className": "DataModel",
+        "ServerScriptService" : {
+            "$path" : "server",
+            "CrescTest" : {
+                "$path" : "lib"
+            }
+        }
+	}
+}
