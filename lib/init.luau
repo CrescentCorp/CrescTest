@@ -110,6 +110,7 @@ else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 
 		for file, testSuiteResult in result do
 			local scopedResult = {}
+			local scopedError = {}
 			for testCase, testResult in testSuiteResult do
 				table.insert(
 					scopedResult,
@@ -120,13 +121,13 @@ else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 
 				if testResult.err then
 					table.insert(
-						scopedResult,
+						scopedError,
 						`\n{testCase}: \n{stdio.color("red")}{testResult.err}{stdio.color("reset")}`
 					)
 				end
 			end
 
-			resultString ..= `\n{file}: \n {table.concat(scopedResult, "\n ")}`
+			resultString ..= `\n{file}: \n {table.concat(scopedResult, "\n ")} Error: \n {table.concat(scopedError, "\n ")}`
 		end
 
 		print(resultString)

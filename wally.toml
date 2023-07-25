@@ -1,6 +1,6 @@
 [package]
 name = "sinlerdev/cresctest" ## since we dont have a scope for Crescent yet, CrescTest will be currently under sinlerdev
-version = "0.1.0"
+version = "1.0.0-rc1"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 description = "A powerful and runtime-agnostic unit testing framework for Luau."

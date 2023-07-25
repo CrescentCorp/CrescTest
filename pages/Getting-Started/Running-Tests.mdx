@@ -1,0 +1,49 @@
+# Running Tests
+
+Running tests in CrescTest is a bit complicated than what you normally need
+to do with Frameworks like TestEZ.
+
+## Roblox
+To run tests in a Roblox environment, we will make use of CrescTest's `.runRoblox` public function, for example:
+```Lua
+CrescTest.runRoblox(someFolderInReplicatedStorage)
+```
+This will run all `.spec` ModuleScripts that are located within the said folder,
+and then print a result message that contains what files (and their test cases)
+were tested, alongside errors that occured (if there is any) during testing.
+
+## Lune
+CrescTest also provides a way to run tests within a Lune environment, which is `CrescTest.runLune` 
+function, for example:
+```Lua
+CrescTest.runLune(file_path_to_folder)
+```
+This will run all `.spec` luau files that are located within the said folder,
+and then print a result message that contains what files (and their test cases) that
+were tested, alongside errors that occured (if there is any) during testing.
+
+## General
+
+CrescTest also provides a truly runtime-agnostic method for running 
+tests, called `.runSuite` public function.
+```lua
+local result = CrescTest.runSuite({
+    case1 = function(skip)
+    end
+})
+
+print(result) -- {case1 = {ok = true, err = nil}}
+```
+
+This function specifically takes a table of test cases, and context (can be nill),
+and then it runs all the given tests, and after that it returns a test suite result 
+that can be parsed by custom bootstrappers.
+
+import { Callout } from 'nextra/components'
+
+<Callout>
+    Implementation detail: All built-in bootstrappers
+    actively use this method, as such, when writing a custom bootstrapper
+    for an environment, you only need to handle the tree resolving
+    part of a directory, and rendering the results.
+</Callout>
