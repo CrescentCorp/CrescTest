@@ -11,6 +11,6 @@ module.exports = {
     images: {
       unoptimized: true,
     },
-    basePath: "/CrescTest"
-
+    basePath: "/CrescTest",
+    assetPrefix: './'
   };
