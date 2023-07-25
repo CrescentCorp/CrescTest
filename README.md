@@ -9,4 +9,4 @@ ____
 
 CrescTest is a runtime-agnostic Luau unit testing framework, with a focus on simplicity, and cross-runtime testing. 
 
-Check the [docs](https://crescentcorp.github.io/CrescTest/) to learn more.
+Check the [docs](https://crescentcorp.github.io/CrescTest/) to learn how to use it.
