@@ -38,9 +38,16 @@ All custom types used within CrescTest.
 function CrescTest.runLune(dir: string, context: any)
 ```
 
-A bootstrapper intended for usage using lune.
+A bootstrapper intended for usage within lune.
 
 * dir: A path to the folder you want to run all .spec files that are present
+* context: any value that you would want all tests to access it
+
+```lua
+function CrescTest.runRoblox(dirInstance: Folder, context: any)
+```
+A bootstrapper intended for usage within Roblox.
+* dirInstace: A folder that contains all the .spec files you need to test.
 * context: any value that you would want all tests to access it
 
 ```lua
