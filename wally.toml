@@ -1,8 +1,10 @@
 [package]
 name = "sinlerdev/cresctest" ## since we dont have a scope for Crescent yet, CrescTest will be currently under sinlerdev
-version = "1.0.0-rc1"
+version = "1.0.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 description = "A powerful and runtime-agnostic unit testing framework for Luau."
 
+exclude = ["**"]
+include = ["lib", "lib/*", "default.project.json", "wally.lock", "wally.toml"]
 [dependencies]

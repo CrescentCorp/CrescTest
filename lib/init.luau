@@ -63,15 +63,16 @@ if script then -- this is roblox, lets setup a bootstrapper for it
 
 		for file, testSuiteResult in result do
 			local scopedResult = {}
+			local scopedError = {}
 			for testCase, testResult in testSuiteResult do
 				table.insert(scopedResult, `   {testCase} .. {if testResult.ok then "Passed" else "Failed"}`)
 
 				if testResult.err then
-					table.insert(scopedResult, `\n{testCase}: \n{testResult.err}`)
+					table.insert(scopedError, `\n{testCase}: \n{testResult.err}`)
 				end
 			end
 
-			resultString ..= `\n{file}: \n {table.concat(scopedResult, "\n ")}`
+			resultString ..= `\n{file}: \n {table.concat(scopedResult, "\n ")}\nError: \n {table.concat(scopedError, "\n ")}`			
 		end
 
 		print(resultString)
@@ -127,7 +128,7 @@ else -- this is in a lune env, lets setup a bootstrapper that depends on fs
 				end
 			end
 
-			resultString ..= `\n{file}: \n {table.concat(scopedResult, "\n ")} Error: \n {table.concat(scopedError, "\n ")}`
+			resultString ..= `\n{file}: \n {table.concat(scopedResult, "\n ")}\nError: \n {table.concat(scopedError, "\n ")}`
 		end
 
 		print(resultString)
